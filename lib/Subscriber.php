@@ -59,7 +59,7 @@ class Subscriber extends Resource implements \JsonSerializable
         Context $context,
         string $email
     ) {
-        $response = $context->makeRequest('/ConsoleService.svc/Console/List/1/Recipients/Subscribed?filterby="Email==' . $email .'"', 'GET');
+        $response = $context->makeRequest('/ConsoleService.svc/Console/List/1/Recipients/Subscribed?filterby="Email==' . urlencode($email) .'"', 'GET');
         $body = self::getJSON($response);
 
         $this->name = $body->name;
