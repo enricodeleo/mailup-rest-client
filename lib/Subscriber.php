@@ -59,14 +59,18 @@ class Subscriber extends Resource implements \JsonSerializable
         Context $context,
         string $email
     ) {
-        $response = $context->makeRequest('/ConsoleService.svc/Console/List/1/Recipients/Subscribed?filterby="Email==' . urlencode($email) .'"', 'GET');
+        $response = $context->makeRequest('/ConsoleService.svc/Console/List/1/Recipients/Subscribed?filterby="Email==\'' . urlencode($email) .'\'"', 'GET');
         $body = self::getJSON($response);
 
-        $this->name = $body->name;
-        $this->email = $body->email;
-        $this->mobileNumber = $body->mobilePhone;
-        $this->mobilePrefix = $body->mobilePrefix;
-        $this->fields = $body->fields;
+        $this->name = $body['Items'][0]['Name'];
+        $this->email = $body['Items'][0]['Email'];
+        $this->id = $body['Items'][0]['idRecipient'];
+        $this->mobileNumber = $body['Items'][0]['MobileNumber'];
+        $this->mobilePrefix = $body['Items'][0]['MobilePrefix'];
+        $this->fields = [];
+        foreach ($body['Items'][0]['Fields'] as $item) {
+            $this->fields[] = DynamicField::fromResponseArray($item);
+        }
     }
 
     /**
