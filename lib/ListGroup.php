@@ -80,6 +80,14 @@ class ListGroup extends Resource
     /**
      * @return string
      */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
